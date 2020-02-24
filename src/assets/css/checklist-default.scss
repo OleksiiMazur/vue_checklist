@@ -1,3 +1,5 @@
+@import "mixins";
+
 body {
     font-family: 'Neucha', Avenir, Helvetica, cursive;
     background-color: #444;
@@ -6,6 +8,11 @@ body {
     padding: 0;
     font-size: 21px;
     letter-spacing: 0.1em;
+}
+
+div, p, span, form {
+    margin: 0;
+    padding: 0;
 }
 
 .main-wrapp {
@@ -21,6 +28,8 @@ h1, h2, h3, h4, h5, h6 {
     font-style: normal;
     color: #fff;
     line-height: 1.5em;
+    margin: 0;
+    padding: 0;
 
     &:after {
         position: absolute;
@@ -33,11 +42,23 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
+.title-group {
+    margin-bottom: 40px;
+
+    h1 {
+        margin-top: 20px;
+    }
+    p {
+        margin-top: 10px;
+    }
+}
+
 .form__help-block {
     margin: 0;
-    padding: 0;
-    font-size: 16px;
-    color: orange;
+    padding: 2px 2px 2px 15px;
+    font-size: 14px;
+    color: orangered;
+    transform: translateY(-7px);
 }
 .quantity {
     padding: 0 15px;
@@ -64,9 +85,9 @@ ul {
         padding: 10px 15px;
         background-color: #777;
         color: #fff;
-        margin-bottom: 3px;
+        margin-bottom: 4px;
         border-style: solid;
-        border-width: 0 2px;
+        border-width: 0 0 2px;
         border-color: #000;
 
         &.checklist__item--new-item {
@@ -83,37 +104,49 @@ ul {
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: #000;
+            background: linear-gradient(to bottom,
+                        rgba(255,255,255,0) 0%,
+                        rgba(0,0,0,1) 100%);
         }
 
         &.green {
             border-color: greenyellow;
             &:before {
-                background-color: greenyellow;
+                background: linear-gradient(to bottom,
+                            rgba(255,255,255,0) 0%,
+                            rgba(173, 255, 47, 1) 100%);
             }
         }
         &.orange {
             border-color: orange;
             &:before {
-                background-color: orange;
+                background: linear-gradient(to bottom,
+                        rgba(255,255,255,0) 0%,
+                        orange 100%);
             }
         }
         &.red {
             border-color: orangered;
             &:before {
-                background-color: orangered;
+                background: linear-gradient(to bottom,
+                            rgba(255,255,255,0) 0%,
+                            orangered 100%);
             }
         }
         &.black {
             border-color: #000;
             &:before {
-                background-color: #000;
+                background: linear-gradient(to bottom,
+                        rgba(255,255,255,0) 0%,
+                        rgba(0,0,0,1) 100%);
             }
         }
         &.white {
             border-color: #fff;
             &:before {
-                background-color: #fff;
+                background: linear-gradient(to bottom,
+                        rgba(255,255,255,0) 0%,
+                        rgba(255,255,255,1) 100%);
             }
         }
     }
@@ -135,6 +168,23 @@ input {
         letter-spacing: 0.1em;
         font-size: 18px;
         color: #444;
+
+        &.errored {
+            box-shadow: 0 0 5px orangered inset;
+
+            @include placeholder {
+                color: orangered !important;
+            }
+        }
+    }
+
+    @include placeholder {
+        color: #777;
+    }
+    &:focus {
+        @include placeholder {
+            color: transparent;
+        }
     }
 }
 
@@ -146,6 +196,11 @@ input {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+
+    .form__help-block {
+        transform: none;
+        width: 100%;
+    }
 }
 
 .colors {
@@ -214,6 +269,35 @@ button {
     &:hover {
         color: greenyellow;
         background-color: transparent;
+    }
+}
+
+
+@media screen and (max-width:479px)  {
+    .safari {
+        select,
+        textarea,
+        input,
+        input[type="text"],
+        input[type="password"],
+        input[type="datetime"],
+        input[type="datetime-local"],
+        input[type="date"],
+        input[type="month"],
+        input[type="time"],
+        input[type="week"],
+        input[type="number"],
+        input[type="email"],
+        input[type="url"],
+        input[type="search"],
+        input[type="tel"],
+        input[type="color"] {
+            font-size: 16px!important;
+
+            @include placeholder {
+                font-size: 13px;
+            }
+        }
     }
 }
 

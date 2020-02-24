@@ -1,24 +1,29 @@
 <template>
     <div class="main-wrapp">
-        <h1>
-            {{ title }}
-        </h1>
+        <div class="title-group">
+            <h1>
+                {{ title }}
+            </h1>
+            <p class="quantity">
+                Now You have <span>{{ checklist.length }}</span> tasks.
+            </p>
+        </div>
 
         <form @submit.prevent="addItem">
             <input
                 type="text"
                 placeholder="Start typing here..."
-                v-validate="'min:4'"
                 name="listItem"
-                v-model="listItem">
+                v-model="listItem"
+                :class="{errored: ($v.listItem.$dirty && !$v.listItem.required) || ($v.listItem.$dirty && !$v.listItem.minLength)}"
+            >
             
             <div class="params">
-                <p class="form__help-block"
-                   v-if="errors.has('listItem')">
-                        Type at least 4 characters
+                <p v-if="($v.listItem.$dirty && !$v.listItem.required) || ($v.listItem.$dirty && !$v.listItem.minLength)"
+                    class="form__help-block">
+                        Type at least {{$v.listItem.$params.minLength.min}} characters
                 </p>
-                <div v-else-if="listItem.length > 3"
-                     class="colors-wrap">
+                <div class="colors-wrap">
                     <div class="colors">
                         <span
                             v-for="color in colors"
@@ -29,7 +34,6 @@
                                     v-bind:value="color.colorName"
                                     v-model="colorType"
                                     :name="colorType.index"
-                                    v-validate="'required|included:' + colorType"
                                     required="required">
                                 <label
                                     v-bind:class="color.colorName"
@@ -43,14 +47,12 @@
                         v-bind:click.prevent="addItem">
                         Create
                     </button>
+                    <p
+                        v-if="($v.colorType.$dirty && !$v.colorType.required)"
+                        class="form__help-block">
+                        Choose a color, pleace 🌈
+                    </p>
                 </div>
-                <p v-else-if="errors.has('colorType')">
-                    Choose a color, pleace 🌈🖌🖍✏
-                </p>
-                <p v-else
-                    class="form__help-block quantity">
-                        Now You have <span>{{ checklist.length }}</span> tasks.
-                </p>
             </div>
         </form>
         
@@ -73,7 +75,7 @@
 </template>
 
 <script>
-    import { required, minLength, maxLength, between, email } from 'vee-validate'
+    import {required, minLength} from 'vuelidate/lib/validators'
     
     export default {
         name: 'Checklist',
@@ -88,8 +90,6 @@
                     {'colorName': 'black'},
                     {'colorName': 'white'},
                 ],
-                listItem: '',
-                colorType: '',
                 checklist: [
                     {
                         'itemName': 'first',
@@ -100,21 +100,37 @@
                         'itemColor': 'white'
                     }
                 ],
+                listItem: '',
+                colorType: '',
             }
         },
+        validations: {
+            listItem: {
+                required,
+                minLength: minLength(4),
+            },
+            colorType: {
+                required,
+            },
+        },
+        watch: {},
+        computed: {},
         methods: {
             addItem() {
-                this.$validator.validateAll()
-                    .then((result) => {
-                        if (result && this.listItem.length > 3) {
-                            this.checklist.push({itemName: this.listItem, itemColor: this.colorType});
-                            this.listItem = '';
-                        } else if (this.listItem.length < 4) {
-                            console.log('At least 4 characters');
-                        } else {
-                            console.log('Chose a color');
-                        }
-                    });
+                if (this.$v.$invalid) {
+                    this.$v.$touch();
+                    return
+                }
+                const checklistFormItem = {
+                    listItem: this.listItem,
+                    colorType: this.colorType,
+                };
+
+                this.checklist.push({itemName: this.listItem, itemColor: this.colorType});
+                this.listItem = '';
+                this.colorType = '';
+                this.$v.$reset();
+                console.log(checklistFormItem);
             }
         },
     }
