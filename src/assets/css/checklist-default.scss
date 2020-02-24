@@ -95,9 +95,10 @@ ul {
 
         p {
             display: flex;
-            span {
+            .close {
                 display: block;
                 position: relative;
+                color: orangered;
                 z-index: 1;
                 margin-left: auto;
                 height: 100%;
@@ -247,7 +248,7 @@ input {
             &:checked {
                 & + label {
                     //border: 2px solid #444;
-                    box-shadow: 0 0 0 3px #444, 0 0 0 5px #fff;
+                    box-shadow: 0 0 0 4px #444, 0 0 0 5px #fff;
                 }
             }
         }
@@ -324,6 +325,9 @@ button {
                 font-size: 13px;
             }
         }
+    }
+    .close {
+        border-color: orangered !important;
     }
 }
 

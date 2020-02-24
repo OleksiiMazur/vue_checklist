@@ -68,7 +68,8 @@
                 :key="index">
                     <p>
                         {{ data.itemName }}
-                        <span v-on:click="removeItem">
+                        <span v-on:click="removeItem"
+                              class="close">
                             x
                         </span>
                     </p>
@@ -141,8 +142,10 @@
                 console.log(checklistFormItem);
             },
             removeItem(id) {
-                console.log(this.listItem.index);
-                this.checklist.splice(this.checklist.id, 1);
+                setTimeout(() => {
+                    console.log(this.listItem.id);
+                    this.checklist.splice(this.checklist.id, 1);
+                }, 200);
             }
         },
     }
