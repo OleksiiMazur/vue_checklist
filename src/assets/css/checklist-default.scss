@@ -69,6 +69,9 @@ h1, h2, h3, h4, h5, h6 {
         border-bottom: 2px solid #eee;
     }
 }
+.create-new {
+    margin-top: 20px;
+}
 
 ul {
     display: flex;
@@ -90,6 +93,28 @@ ul {
         border-width: 0 0 2px;
         border-color: #000;
 
+        p {
+            display: flex;
+            span {
+                display: block;
+                position: relative;
+                z-index: 1;
+                margin-left: auto;
+                height: 100%;
+                border-bottom: 2px solid transparent;
+                cursor: pointer;
+                padding: 0 5px;
+                transform: translateY(2px);
+
+                &::selection {
+                    background: transparent;
+                }
+                &:hover {
+                    border-color: orangered;
+                }
+            }
+        }
+
         &.checklist__item--new-item {
             order: -1;
             z-index: 1;
@@ -99,11 +124,12 @@ ul {
         &:before {
             position: absolute;
             content: '';
-            opacity: 0.05;
+            opacity: 0.08;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
+            transform: rotate(180deg);
             background: linear-gradient(to bottom,
                         rgba(255,255,255,0) 0%,
                         rgba(0,0,0,1) 100%);

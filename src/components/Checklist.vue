@@ -5,7 +5,9 @@
                 {{ title }}
             </h1>
             <p class="quantity">
-                Now You have <span>{{ checklist.length }}</span> tasks.
+                Now You have
+                <span v-if="checklist.length > 0">{{ checklist.length }}</span>
+                <span v-else>no</span> tasks.
             </p>
         </div>
 
@@ -17,7 +19,6 @@
                 v-model="listItem"
                 :class="{errored: ($v.listItem.$dirty && !$v.listItem.required) || ($v.listItem.$dirty && !$v.listItem.minLength)}"
             >
-            
             <div class="params">
                 <p v-if="($v.listItem.$dirty && !$v.listItem.required) || ($v.listItem.$dirty && !$v.listItem.minLength)"
                     class="form__help-block">
@@ -56,7 +57,8 @@
             </div>
         </form>
         
-        <p v-if="checklist.length < 1">
+        <p v-if="checklist.length < 1"
+            class="create-new">
             Create a new item
         </p>
         <ul v-else class="checklist">
@@ -64,7 +66,12 @@
                 :class="'checklist__item ' + data.itemColor"
                 v-for="(data, index) in checklist"
                 :key="index">
-                    {{ data.itemName }}
+                    <p>
+                        {{ data.itemName }}
+                        <span v-on:click="removeItem">
+                            x
+                        </span>
+                    </p>
             </li>
             <li v-if="listItem.length > 0"
                 :class="'checklist__item checklist__item--new-item ' + colorType">
@@ -130,7 +137,12 @@
                 this.listItem = '';
                 this.colorType = '';
                 this.$v.$reset();
+                
                 console.log(checklistFormItem);
+            },
+            removeItem(id) {
+                console.log(this.listItem.index);
+                this.checklist.splice(this.checklist.id, 1);
             }
         },
     }
