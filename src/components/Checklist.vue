@@ -51,13 +51,13 @@
                     <p
                         v-if="($v.colorType.$dirty && !$v.colorType.required)"
                         class="form__help-block">
-                        Choose a color, pleace 🌈
+                        Choose a color, please 🌈
                     </p>
                 </div>
             </div>
         </form>
         
-        <p v-if="checklist.length < 1"
+        <p v-if="checklist.length === 0"
             class="create-new">
             Create a new item
         </p>
@@ -68,7 +68,7 @@
                 :key="index">
                     <p>
                         {{ data.itemName }}
-                        <span v-on:click="removeItem"
+                        <span @click="removeItem(index)"
                               class="close">
                             x
                         </span>
@@ -105,7 +105,19 @@
                     },
                     {
                         'itemName': 'second',
-                        'itemColor': 'white'
+                        'itemColor': 'green'
+                    },
+                    {
+                        'itemName': 'tHIRD',
+                        'itemColor': 'orange'
+                    },
+                    {
+                        'itemName': 'Fourth',
+                        'itemColor': 'red'
+                    },
+                    {
+                        'itemName': 'fIfTh',
+                        'itemColor': 'black'
                     }
                 ],
                 listItem: '',
@@ -141,11 +153,10 @@
                 
                 console.log(checklistFormItem);
             },
-            removeItem(id) {
+            removeItem: function(index) {
                 setTimeout(() => {
-                    console.log(this.listItem.id);
-                    this.checklist.splice(this.checklist.id, 1);
-                }, 200);
+                    this.checklist.splice(index, 1);
+                }, 70);
             }
         },
     }
